@@ -2,31 +2,30 @@ const ns = require('express').Router();
 const { v4: uuidv4 } = require('uuid');
 const { readAndAppend, readFromFile } = require('../helpers/fsUtils');
 
-// GET Route for retrieving all the feedback
-fb.get('/', (req, res) =>
-  readFromFile('./db/feedback.json').then((data) => res.json(JSON.parse(data)))
+// GET Route for retrieving notes
+ns.get('/notes', (req, res) =>
+  readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)))
 );
 
 // POST Route for submitting feedback
-fb.post('/', (req, res) => {
+ns.post('/notes', (req, res) => {
   // Destructuring assignment for the items in req.body
-  const { email, feedbackType, feedback } = req.body;
+  const { title, text} = req.body;
 
   // If all the required properties are present
-  if (email && feedbackType && feedback) {
+  if (title && test) {
     // Variable for the object we will save
-    const newFeedback = {
-      email,
-      feedbackType,
-      feedback,
-      feedback_id: uuidv4(),
+    const newNote = {
+      title,
+      text,
+      note_id: uuidv4(),
     };
 
-    readAndAppend(newFeedback, './db/feedback.json');
+    readAndAppend(newNote, './db/db.json');
 
     const response = {
       status: 'success',
-      body: newFeedback,
+      body: newNote,
     };
 
     res.json(response);
@@ -35,4 +34,4 @@ fb.post('/', (req, res) => {
   }
 });
 
-module.exports = fb;
+module.exports = ns;
